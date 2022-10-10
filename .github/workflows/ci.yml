@@ -14,16 +14,21 @@ jobs:
         with:
             php-version: "8.1"
             coverage: xdebug
+      - name: Update dependencies in lock file
+        run: composer update
 
-      - name: Install composer and dependencies
-        uses: php-actions/composer@v6
+      - name: Install dependencies
+        run: composer install
 
-      - name: PHPUnit Tests
-        uses: php-actions/phpunit@v3
-        env:
-          XDEBUG_MODE: coverage
+      - name: Run tests
+        run: composer test
+
+      - name: Upload Code Coverage to Codecov
+        uses: codecov/codecov-action@v2
         with:
-          bootstrap: vendor/autoload.php
-          configuration: phpunit.xml
-          php_extensions: xdebug
-          args: tests --coverage-clover ./coverage.xml
+            token: ${{ secrets.CODECOV_TOKEN }}
+            file: ./coverage.xml
+            flags: unit_tests
+            name: codecov-umbrella
+            fail_ci_if_error: true
+            verbose: true
