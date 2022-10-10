@@ -26,6 +26,6 @@ jobs:
       - name: Upload to Codecov
         uses: codecov/codecov-action@v2
         with:
-          token: "d59ad10e-763d-42f9-9bb0-a88952a9d50b"
+          token: ${{ secrets.CODE_COV_TOKEN }}
           files: ./coverage.xml
           verbose: true
