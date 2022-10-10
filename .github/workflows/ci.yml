@@ -9,6 +9,11 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
+      - name: Setup PHP with Xdebug
+        uses: shivammathur/setup-php@v2
+        with:
+            php-version: "8.1"
+            coverage: xdebug
 
       - name: Install composer and dependencies
         uses: php-actions/composer@v6
