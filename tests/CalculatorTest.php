@@ -5,6 +5,10 @@ use App\Calculator;
 
 class CalculatorTest extends TestCase
 {
+    /**
+    @covers App\Calculator::add
+
+    */
     public function testAddOperation(): void
     {
         $adder = new Calculator("add");
@@ -12,6 +16,10 @@ class CalculatorTest extends TestCase
         $this->assertEquals($value, 5);
     }
 
+    /**
+    @covers App\Calculator::subtract
+
+    */
     public function testSubtractOperation(): void
     {
         $adder = new Calculator("subtract");
