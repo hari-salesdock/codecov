@@ -27,7 +27,7 @@ jobs:
         env:
           XDEBUG_MODE: coverage
         with:
-          version : '9.5',
+          version : '9.5'
           php_version : '8.1'
           bootstrap: vendor/autoload.php
           configuration: phpunit.xml
