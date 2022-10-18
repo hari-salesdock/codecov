@@ -10,30 +10,24 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v1
 
-      - name: Setup PHP
+      - name: Setup PHP with Xdebug
         uses: shivammathur/setup-php@v2
         with:
-            php-version: '8.1'
+          php-version: '8.1'
+          coverage: xdebug
+          tools: phpunit:9.5
+          configuration: phpunit.xml
+          bootstrap: vendor/autoload.php
 
-      - name: PHP version
-        run: |
-          php -v
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 
       - name: Install Dependencies
         run: composer install -q --no-ansi --no-interaction --no-scripts --no-suggest --prefer-dist
 
-      - name: PHPUnit Tests
-        uses: php-actions/phpunit@v3
-        env:
-          XDEBUG_MODE: coverage
-        with:
-          version : '9.5'
-          php_version : '8.1'
-          bootstrap: vendor/autoload.php
-          configuration: phpunit.xml
-          memory_limit: 256M
-          php_extensions: xdebug
-          args: tests --coverage-clover ./coverage.xml
+      - name: Run Test
+        run : vendor/bin/phpunit --configuration phpunit.xml --bootstrap vendor/autoload.php --test-suffix Test.php,.phpt -d memory_limit=256M tests --coverage-clover ./coverage.xml
 
       - name: Upload to Codecov
         uses: codecov/codecov-action@v2
