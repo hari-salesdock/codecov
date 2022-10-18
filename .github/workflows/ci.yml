@@ -16,6 +16,11 @@ jobs:
           php-version: '8.1'
           coverage: xdebug
           tools: phpunit:9.5
+          configuration: phpunit.xml
+          bootstrap: vendor/autoload.php
+
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 
       - name: Run Test
