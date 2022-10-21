@@ -3,38 +3,26 @@ name: CI
 on: [push]
 
 jobs:
-  build-test:
+  build:
+    name: Code Coverage
     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v2
-        with:
-          push_badge: true
-          repo_token : ${{ secrets.GITHUB_TOKEN }}
+    strategy:
+      matrix:
+        php-version: [ 8.1 ]
 
-      - name: Setup PHP with Xdebug
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up PHP ${{ matrix.php-version }}
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.1'
-          coverage: xdebug
-          tools: phpunit:9.5
-          configuration: phpunit.xml
-          bootstrap: vendor/autoload.php
+          php-version: ${{ matrix.php-version }}
 
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-
-      - name: Install Dependencies
-        run: composer install -q --no-ansi --no-interaction --no-scripts --no-suggest --prefer-dist
-
-      - name: Run Test
-        run : vendor/bin/phpunit --configuration phpunit.xml --bootstrap vendor/autoload.php --test-suffix Test.php,.phpt -d memory_limit=256M tests --coverage-clover ./clover.xml
-
-      - name: Upload to Codecov
-        uses: codecov/codecov-action@v2
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
         with:
           token: ${{ secrets.CODE_COV_TOKEN }}
+          fail_ci_if_error: true
           files: ./clover.xml
-          verbose: true
