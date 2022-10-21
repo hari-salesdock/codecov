@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1666335176">
-  <project timestamp="1666335176">
+<coverage generated="1666335495">
+  <project timestamp="1666335495">
     <file name="/Users/harinarayanant/Sites/codecov/src/Calculator.php">
       <class name="App\Calculator" namespace="global">
         <metrics complexity="5" methods="5" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="6" coveredstatements="0" elements="11" coveredelements="0"/>
