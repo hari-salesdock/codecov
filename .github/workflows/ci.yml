@@ -13,9 +13,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Install composer and dependencies
-        uses: php-actions/composer@v6
-
       - name: Install PHP with extensions
         uses: shivammathur/setup-php@v2
         with:
@@ -25,8 +22,11 @@ jobs:
             ini-values: memory_limit=-1, assert.exception=1, zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
             tools: none
 
+      - name: Install composer and dependencies
+        uses: php-actions/composer@v6
+
       - name: Install Dependencies
-        run: composer install -q --no-ansi --no-interaction --no-scripts --no-suggest --prefer-dist
+        run: sudo composer install -q --no-ansi --no-interaction --no-scripts --no-suggest --prefer-dist
 
       - name: Run tests with PHPUnit
         run: vendor/bin/phpunit --coverage-clover=coverage.xml
