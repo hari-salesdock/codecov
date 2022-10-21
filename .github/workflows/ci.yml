@@ -20,7 +20,7 @@ jobs:
         with:
             bootstrap: vendor/autoload.php
             configuration: ./phpunit.xml
-            php_extensions: xdebug
+            memory_limit : -1
             args: tests --coverage-clover ./coverage.xml
 
       - name: Upload to Codecov
