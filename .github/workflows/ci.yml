@@ -3,21 +3,20 @@ name: CI
 on: [push]
 
 jobs:
-  build:
-    name: Code Coverage
+  build-test:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        php-version: [ 8.1 ]
-
     steps:
-      - name: Checkout repository
+      - name: Checkout Code
         uses: actions/checkout@v2
 
-      - name: Upload coverage to Codecov
+      - name: Install composer and dependencies
+        uses: php-actions/composer@v6
+
+      - name: Upload to Codecov
         uses: codecov/codecov-action@v2
         with:
-          token: ${{ secrets.CODE_COV_TOKEN }}
-          verbose: true
-          files: ./clover.xml
+            token: ${{ secrets.CODE_COV_TOKEN }}
+            files: ./coverage.xml
+            verbose: true
+

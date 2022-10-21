@@ -13,7 +13,7 @@ class CalculatorTest extends TestCase
         $this->assertEquals($value, 5);
     }
 
-    
+
     public function testSubtractOperation(): void
     {
         $adder = new Calculator("subtract");
