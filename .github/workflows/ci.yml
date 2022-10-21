@@ -14,10 +14,11 @@ jobs:
         uses: php-actions/composer@v6
 
       - name: PHPUnit Tests
-        uses: php-actions/phpunit@v9
+        uses: php-actions/phpunit@v2
         env:
             XDEBUG_MODE: coverage
         with:
+            php_extensions: xdebug
             bootstrap: vendor/autoload.php
             configuration: ./phpunit.xml
             memory_limit : -1
