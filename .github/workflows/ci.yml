@@ -1,31 +1,38 @@
 name: CI
 
-on: [push]
+on:
+  pull_request_review:
+    types:
+      - submitted
 
 jobs:
   build-test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v3
 
       - name: Install composer and dependencies
         uses: php-actions/composer@v6
 
-      - name: PHPUnit Tests
-        uses: php-actions/phpunit@v9
-        env:
-            XDEBUG_MODE: coverage
+      - name: Install PHP with extensions
+        uses: shivammathur/setup-php@v2
         with:
-            php_extensions: xdebug
-            bootstrap: vendor/autoload.php
-            configuration: ./phpunit.xml
-            memory_limit : -1
-            args: tests --coverage-clover ./coverage.xml
+            php-version: '8.1'
+            coverage: 'xdebug3'
+            extensions: dom, json, libxml, mbstring, pdo_sqlite, soap, xml, xmlwriter, :apcu, :imagick
+            ini-values: memory_limit=-1, assert.exception=1, zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
+            tools: none
+
+      - name: Install Dependencies
+        run: composer install -q --no-ansi --no-interaction --no-scripts --no-suggest --prefer-dist
+
+      - name: Run tests with PHPUnit
+        run: vendor/bin/phpunit --coverage-clover=coverage.xml
 
       - name: Upload to Codecov
-        uses: codecov/codecov-action@v2
+        uses: codecov/codecov-action@v3
         with:
             token: ${{ secrets.CODE_COV_TOKEN }}
             files: ./coverage.xml
