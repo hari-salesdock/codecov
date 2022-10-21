@@ -8,7 +8,10 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
+        with:
+          push_badge: true
+          repo_token : ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup PHP with Xdebug
         uses: shivammathur/setup-php@v2
@@ -27,11 +30,11 @@ jobs:
         run: composer install -q --no-ansi --no-interaction --no-scripts --no-suggest --prefer-dist
 
       - name: Run Test
-        run : vendor/bin/phpunit --coverage-html=vendor/html  -d memory_limit=-1
+        run : vendor/bin/phpunit --configuration phpunit.xml --bootstrap vendor/autoload.php --test-suffix Test.php,.phpt -d memory_limit=256M tests --coverage-clover ./clover.xml
 
       - name: Upload to Codecov
         uses: codecov/codecov-action@v2
         with:
           token: ${{ secrets.CODE_COV_TOKEN }}
-          files: ./coverage.xml
+          files: ./clover.xml
           verbose: true
